@@ -63,8 +63,10 @@ class AddNewNLPMetriclCommand(BaseMetricsCLICommand):
 
         metric_shortened = configuration["metric_shortened"]
 
+        # Metric functional
         shutil.move(
-            os.path.join(directory, f"{metric_shortened}.py"), os.path.join(metric_dir, f"{metric_shortened}.py")
+            os.path.join(directory, f"functional-{metric_shortened}.py"),
+            os.path.join(metric_dir, f"{metric_shortened}.py")
         )
 
         # Clean root dir
