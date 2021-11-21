@@ -1,0 +1,5 @@
+{
+  "metric_module": "{{cookiecutter.metric_module}}",
+  "metric_functional": "{{cookiecutter.metric_functional}}",
+  "metric_shortened": "{{cookiecutter.metric_shortened}}"
+}
