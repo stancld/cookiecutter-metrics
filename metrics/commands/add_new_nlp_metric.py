@@ -30,7 +30,7 @@ def add_new_nlp_metric_command_factory(args: Namespace):
 class AddNewNLPMetriclCommand(BaseMetricsCLICommand):
     @staticmethod
     def register_subcommand(parser: ArgumentParser):
-        add_new_nlp_metric_parser = parser.add_parser("add-new-nlp-model")
+        add_new_nlp_metric_parser = parser.add_parser("add-new-nlp-metric")
         add_new_nlp_metric_parser.add_argument(
             "--path", type=str, help="Path to cookiecutter. Should only be used for testing purposes."
         )
@@ -62,6 +62,6 @@ class AddNewNLPMetriclCommand(BaseMetricsCLICommand):
 
         metric_shortened = configuration["metric_shortened"]
 
-        shutil.move(
+        shutil.copy(
             os.path.join(directory, f"{metric_shortened}.py"), os.path.join(metric_dir, f"{metric_shortened}.py")
         )
