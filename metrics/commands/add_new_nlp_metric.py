@@ -54,14 +54,18 @@ class AddNewNLPMetriclCommand(BaseMetricsCLICommand):
         cookiecutter(str(path_to_cookiecutter))
 
         directory = [directory for directory in os.listdir() if "cookiecutter-template-" in directory[:22]][0]
-        metric_dir = os.path.join(path_to_metric_root, "metric", "functional", "nlp")
+        metric_dir = os.path.join(path_to_metric_root, "metrics", "functional", "nlp")
 
         # Retrieve configuration
-        with open(directory + "/configuration.json", "r") as configuration_file:
+        with open(os.path.join(directory, "configuration.json"), "r") as configuration_file:
             configuration = json.load(configuration_file)
+        os.remove(os.path.join(directory, "configuration.json"))
 
         metric_shortened = configuration["metric_shortened"]
 
-        shutil.copy(
+        shutil.move(
             os.path.join(directory, f"{metric_shortened}.py"), os.path.join(metric_dir, f"{metric_shortened}.py")
         )
+
+        # Clean root dir
+        os.rmdir(directory)
