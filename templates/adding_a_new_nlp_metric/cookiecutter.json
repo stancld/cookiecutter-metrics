@@ -1,4 +1,5 @@
 {
+  "metric": "AUTOMATIC",
   "metric_module": "AUTOMATICScore",
   "metric_functional": "automatic_score",
   "metric_shortened": "automatic"

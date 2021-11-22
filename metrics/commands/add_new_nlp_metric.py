@@ -16,6 +16,7 @@ import json
 import os
 import pathlib
 import shutil
+import subprocess
 from argparse import ArgumentParser, Namespace
 
 from cookiecutter.main import cookiecutter
@@ -32,7 +33,9 @@ class AddNewNLPMetriclCommand(BaseMetricsCLICommand):
     def register_subcommand(parser: ArgumentParser):
         add_new_nlp_metric_parser = parser.add_parser("add-new-nlp-metric")
         add_new_nlp_metric_parser.add_argument(
-            "--path", type=str, help="Path to cookiecutter. Should only be used for testing purposes."
+            "--path",
+            type=str,
+            help="Path to cookiecutter. Should only be used for testing purposes.",
         )
         add_new_nlp_metric_parser.set_defaults(func=add_new_nlp_metric_command_factory)
 
@@ -43,9 +46,7 @@ class AddNewNLPMetriclCommand(BaseMetricsCLICommand):
         # TODO: It would be necessary to dome some checks and error handling
 
         path_to_metric_root = (
-            pathlib.Path(__file__).parent.parent.parent
-            if self._path is None
-            else pathlib.Path(self._path).parent
+            pathlib.Path(__file__).parent.parent.parent if self._path is None else pathlib.Path(self._path).parent
         )
         path_to_cookiecutter = path_to_metric_root / "templates" / "adding_a_new_nlp_metric"
 
@@ -54,7 +55,8 @@ class AddNewNLPMetriclCommand(BaseMetricsCLICommand):
         cookiecutter(str(path_to_cookiecutter))
 
         directory = [directory for directory in os.listdir() if "cookiecutter-template-" in directory[:22]][0]
-        metric_dir = os.path.join(path_to_metric_root, "metrics", "functional", "nlp")
+        metric_module_dir = os.path.join(path_to_metric_root, "metrics", "nlp")
+        metric_functional_dir = os.path.join(path_to_metric_root, "metrics", "functional", "nlp")
 
         # Retrieve configuration
         with open(os.path.join(directory, "configuration.json"), "r") as configuration_file:
@@ -62,12 +64,30 @@ class AddNewNLPMetriclCommand(BaseMetricsCLICommand):
         os.remove(os.path.join(directory, "configuration.json"))
 
         metric_shortened = configuration["metric_shortened"]
+        metric_functional = configuration["metric_functional"]
+        metric_module = configuration["metric_module"]
+
+        # Metric module
+        shutil.move(
+            os.path.join(directory, f"{metric_shortened}.py"),
+            os.path.join(metric_module_dir, f"{metric_shortened}.py"),
+        )
+        # Add to __init__.py
+        with open(os.path.join(metric_module_dir, "__init__.py"), "a") as f:
+            f.write(f"from metrics.nlp.{metric_shortened} import {metric_module}  # noqa: F401")
 
         # Metric functional
         shutil.move(
             os.path.join(directory, f"functional-{metric_shortened}.py"),
-            os.path.join(metric_dir, f"{metric_shortened}.py")
+            os.path.join(metric_functional_dir, f"{metric_shortened}.py"),
         )
+        # Add to __init__.py
+        with open(os.path.join(metric_functional_dir, "__init__.py"), "a") as f:
+            f.write(f"from metrics.functional.nlp.{metric_shortened} import {metric_functional}  # noqa: F401")
 
         # Clean root dir
         os.rmdir(directory)
+
+        # Run isort and black to fix __init__.py files
+        subprocess.run(["isort", "metrics"])
+        subprocess.run(["black", "metrics"])

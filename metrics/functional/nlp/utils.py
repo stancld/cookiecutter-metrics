@@ -1,7 +1,10 @@
 from typing import List, Union
 
 
-def prepare_inputs(reference_corpus: Union[List[str], List[List[str]]], hypothesis_corpus: Union[str, List[str]]):
+def prepare_inputs(
+    reference_corpus: Union[List[str], List[List[str]]],
+    hypothesis_corpus: Union[str, List[str]],
+):
     if isinstance(hypothesis_corpus, str):
         hypothesis_corpus = [hypothesis_corpus]
 

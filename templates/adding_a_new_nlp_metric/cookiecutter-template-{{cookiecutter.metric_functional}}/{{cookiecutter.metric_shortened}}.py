@@ -6,8 +6,8 @@ from metrics.functional.nlp.manual import _manual_score_compute, _manual_score_u
 from metrics.functional.nlp.utils import prepare_inputs
 
 
-class MANUALScore(Metric):
-    """Calculate `MANUAL score`_ of TODO: Appropriate docstring.
+class {{cookiecutter.metric_module}}(Metric):
+    """Calculate `{{cookiecutter.metric}} score`_ of TODO: Appropriate docstring.
     Args:
         compute_on_step:
             Forward only calls ``update()`` and returns None if this is set to False. default: True
@@ -46,9 +46,7 @@ class MANUALScore(Metric):
         pass
 
     def update(
-        self,
-        reference_corpus: Union[List[str], List[List[str]]],
-        hypothesis_corpus: Union[str, List[str]],
+        self, reference_corpus: Union[List[str], List[List[str]]], hypothesis_corpus: Union[str, List[str]]
     ) -> None:
         """
         Appropraite docstings

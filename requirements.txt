@@ -3,3 +3,4 @@ torchmetrics>=0.6
 
 # Code style
 flake8==3.9.2
+isort==5.9.3
