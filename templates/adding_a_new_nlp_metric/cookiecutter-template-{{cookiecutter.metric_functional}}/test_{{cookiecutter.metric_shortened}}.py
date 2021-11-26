@@ -4,8 +4,8 @@ from typing import Any, Dict
 
 import pytest
 
-from metrics.functional.nlp.manual import manual_score
-from metrics.nlp.manual import MANUALScore
+from metrics.functional.nlp.{{cookiecutter.metric_shortened}} import {{cookiecutter.metric_functional}}
+from metrics.nlp.{{cookiecutter.metric_shortened}} import {{cookiecutter.metric_module}}
 
 TextTester = None  # dummy initialization
 
@@ -24,8 +24,8 @@ BATCHES = {
 }
 
 
-def manual_score_original():
-    return
+def {{cookiecutter.metric_functional}}_original():
+    ...
 
 
 @pytest.mark.parametrize(
@@ -34,18 +34,18 @@ def manual_score_original():
         pytest.param(BATCHES["preds"], BATCHES["targets"]),
     ],
 )
-class TestMANUALScore(TextTester):
+class Test{{cookiecutter.metric_module}}(TextTester):
     @pytest.mark.parametrize("ddp", [False, True])
     @pytest.mark.parametrize("dist_sync_on_step", [False, True])
     def test_manual_score_class(self, ddp, dist_sync_on_step, targets, preds):
         metric_args: Dict[str, Any] = {}
-        original_metric = partial(manual_score_original)
+        original_metric = partial({{cookiecutter.metric_functional}}_original)
 
         self.run_class_metric_test(
             ddp=ddp,
             preds=preds,
             targets=targets,
-            metric_class=MANUALScore,
+            metric_class={{cookiecutter.metric_module}},
             sk_metric=original_metric,
             dist_sync_on_step=dist_sync_on_step,
             metric_args=metric_args,
@@ -56,12 +56,12 @@ class TestMANUALScore(TextTester):
 
     def test_manul_score_functional(self, targets, preds):
         metric_args: Dict[str, Any] = {}
-        original_metric = partial(manual_score_original)
+        original_metric = partial({{cookiecutter.metric_functional}}_original)
 
         self.run_functional_metric_test(
             preds,
             targets,
-            metric_functional=manual_score,
+            metric_functional={{cookiecutter.metric_functional}},
             sk_metric=original_metric,
             metric_args=metric_args,
             input_order=INPUT_ORDER.TARGETS_FIRST,
@@ -73,8 +73,8 @@ class TestMANUALScore(TextTester):
         self.run_differentiability_test(
             preds=preds,
             targets=targets,
-            metric_module=MANUALScore,
-            metric_functional=manual_score,
+            metric_module={{cookiecutter.metric_module}},
+            metric_functional={{cookiecutter.metric_functional}},
             metric_args=metric_args,
             input_order=INPUT_ORDER.TARGETS_FIRST,
         )

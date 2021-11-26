@@ -85,6 +85,12 @@ class AddNewNLPMetriclCommand(BaseMetricsCLICommand):
         with open(os.path.join(metric_functional_dir, "__init__.py"), "a") as f:
             f.write(f"from metrics.functional.nlp.{metric_shortened} import {metric_functional}  # noqa: F401")
 
+        # Add test file
+        shutil.move(
+            os.path.join(directory, f"test_{metric_shortened}.py"),
+            os.path.join(path_to_metric_root, "tests", "nlp", f"test_{metric_shortened}.py"),
+        )
+
         # Clean root dir
         os.rmdir(directory)
 
