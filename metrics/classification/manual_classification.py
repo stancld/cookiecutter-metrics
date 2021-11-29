@@ -1,13 +1,15 @@
-from typing import Any, Callable, List, Optional, Union
+from typing import Any, Callable, Optional
 
+from torch import Tensor
 from torchmetrics import Metric
 
-from metrics.functional.nlp.manual import _manual_score_compute, _manual_score_update
-from metrics.functional.nlp.utils import prepare_inputs
+from metrics.functional.classification.manual_classification import (
+    _manual_classification_score_compute, _manual_classification_score_update
+)
 
 
-class MANUALScore(Metric):
-    """Calculate `MANUAL score`_ of TODO: Appropriate docstring.
+class MANUALICLASSIFICATIONScore(Metric):
+    """Calculate `MANUALCLASSIFICATION score`_ of TODO: Appropriate docstring.
     Args:
         compute_on_step:
             Forward only calls ``update()`` and returns None if this is set to False. default: True
@@ -45,20 +47,14 @@ class MANUALScore(Metric):
 
         ...
 
-    def update(
-        self,
-        reference_corpus: Union[List[str], List[List[str]]],
-        hypothesis_corpus: Union[str, List[str]],
-    ) -> None:
+    def update(self, preds: Tensor, targets: Tensor) -> None:
         """
         Appropraite docstings
         """
-        reference_corpus, hypothesis_corpus = prepare_inputs(reference_corpus, hypothesis_corpus)
-        _manual_score_update(reference_corpus, hypothesis_corpus)
+        _manual_classification_score_update(preds, targets)
 
     def compute(self):
         """
         Appropriate docstring.
         """
-        _manual_score_compute()
-        ...
+        _manual_classification_score_compute()

@@ -1,0 +1,1 @@
+from metrics.functional.image.manual_image import manual_image_score  # noqa: F401

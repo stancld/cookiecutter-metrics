@@ -4,8 +4,8 @@ from typing import Any, Dict
 
 import pytest
 
-from metrics.functional.nlp.manual import manual_score
-from metrics.nlp.manual import MANUALScore
+from metrics.functional.classification.manual_classification import manual_classification_score
+from metrics.classification.manual_classification import MANUALICLASSIFICATIONScore
 
 TextTester = None  # dummy initialization
 

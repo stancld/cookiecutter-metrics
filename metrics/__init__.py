@@ -10,6 +10,8 @@ _PACKAGE_ROOT = os.path.dirname(__file__)
 _PROJECT_ROOT = os.path.dirname(_PACKAGE_ROOT)
 
 from metrics import functional  # noqa: E402
+from metrics.classification import MANUALICLASSIFICATIONScore  # noqa: E402
+from metrics.image import MANUALIMAGEScore  # noqa: E402
 from metrics.nlp import MANUALScore  # noqa: E402
 
-__all__ = ["functional", "MANUALScore"]
+__all__ = ["functional", "MANUALICLASSIFICATIONScore", "MANUALIMAGEScore", "MANUALScore"]
